@@ -9,8 +9,8 @@ Usage: $(basename "${BASH_SOURCE[0]}") [options]
 Options:
 
 -h, --help         Print this help and exit.
--b, --bundle name  Directory to store the bundle. Needs to be an empty directory.
--k                Keep bundle directory (useful for debugging). By default it will be deleted.
+-b, --bundle name  Directory to store intermediate files (bundle). Needs to be an empty directory.
+-k                 Keep bundle directory (useful for debugging). By default it will be deleted.
 -d, --data name    Directory containing data files. Can be json or yaml files.
 -t, --tests name   Directory containing Rego tests. Could be the same as data directory.
 EOF
@@ -101,5 +101,5 @@ if [[ -z $KEEP_BUNDLE ]]; then
   rm -rf $BUNDLE_DIR
 fi
 
-opa test -v -b bundle.tar.gz
+opa test --explain notes -b bundle.tar.gz
 
