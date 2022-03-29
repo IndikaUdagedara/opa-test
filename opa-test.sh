@@ -14,7 +14,6 @@ Options:
 -d, --data name    Directory containing data files. Can be json or yaml files.
 -t, --tests name   Directory containing Rego tests. Could be the same as data directory.
 EOF
-  exit
 }
 
 while [[ $# -gt 0 ]]; do
@@ -40,7 +39,7 @@ while [[ $# -gt 0 ]]; do
       ;;
     -h|--help)
       usage
-      exit 1
+      exit 0
       ;;
     -*|--*)
       echo "Unknown option $1"
