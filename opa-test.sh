@@ -10,7 +10,7 @@ Options:
 
 -h, --help         Print this help and exit.
 -b, --bundle name  Directory to store intermediate files (bundle). Needs to be an empty directory.
--k                 Keep bundle directory (useful for debugging). By default it will be deleted.
+-c                 Clean the bundle directory. By default it will be re-used if exists.
 -d, --data name    Directory containing data files. Can be json or yaml files.
 -t, --tests name   Directory containing Rego tests. Could be the same as data directory.
 EOF
@@ -67,7 +67,7 @@ copy_data() {
     relative_path=$(echo $f | sed "s,^$DATA_DIR/,,")
     dir_path=$(dirname $relative_path)
     filename=$(basename $relative_path)
-    file_prefix=$(sed -e 's/\..*$//' <<< $filename)
+    file_prefix=$(sed -e 's/\..[(json)(yaml)]$//' <<< $filename)
     file_extension=$(sed -E 's/(.*)\.(.*$)/\2/' <<< $filename)
     copied_path=$BUNDLE_DIR/$dir_path/$file_prefix
     mkdir -p $copied_path
@@ -87,18 +87,11 @@ copy_tests() {
 }
 
 mkdir -p $BUNDLE_DIR
-if [[ -nz "$(ls -A $BUNDLE_DIR)" ]]; then
-  echo "Bundle directory not empty" && exit 1
+if [[ -z $CLEAN_BUNDLE ]]; then
+  rm -rf $BUNDLE_DIR
 fi
 
 copy_data
 copy_tests
 
-opa build $BUNDLE_DIR
-
-if [[ -z $KEEP_BUNDLE ]]; then
-  rm -rf $BUNDLE_DIR
-fi
-
-opa test --explain notes -b bundle.tar.gz
-
+opa test --explain notes $BUNDLE_DIR 
