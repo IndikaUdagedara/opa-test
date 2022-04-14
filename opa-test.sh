@@ -23,8 +23,8 @@ while [[ $# -gt 0 ]]; do
       shift # past argument
       shift # past value
       ;;
-    -k)
-      KEEP_BUNDLE=true
+    -c)
+      CLEAN_BUNDLE=true
       shift
       ;;
     -d|--data)
@@ -67,7 +67,7 @@ copy_data() {
     relative_path=$(echo $f | sed "s,^$DATA_DIR/,,")
     dir_path=$(dirname $relative_path)
     filename=$(basename $relative_path)
-    file_prefix=$(sed -e 's/\..[(json)(yaml)]$//' <<< $filename)
+    file_prefix=$(sed -E 's/\..[(json)(yaml)]+$//' <<< $filename)
     file_extension=$(sed -E 's/(.*)\.(.*$)/\2/' <<< $filename)
     copied_path=$BUNDLE_DIR/$dir_path/$file_prefix
     mkdir -p $copied_path
@@ -86,10 +86,11 @@ copy_tests() {
   done
 }
 
-mkdir -p $BUNDLE_DIR
-if [[ -z $CLEAN_BUNDLE ]]; then
+if [[ $CLEAN_BUNDLE -eq true ]]; then
   rm -rf $BUNDLE_DIR
 fi
+
+mkdir -p $BUNDLE_DIR
 
 copy_data
 copy_tests
