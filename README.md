@@ -105,7 +105,8 @@ Usage: opa-test.sh [options]
 Options:
 
 -h, --help         Print this help and exit.
--k                 Keep bundle directory (useful for debugging). By default it will be deleted.
+-b, --bundle name  Directory to store intermediate files (bundle). Needs to be an empty directory.
+-c                 Clean the bundle directory. By default it will be re-used if exists.
 -d, --data name    Directory containing data files. Can be json or yaml files.
 -t, --tests name   Directory containing Rego tests. Could be the same as data directory.
 ```
