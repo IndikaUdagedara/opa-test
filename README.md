@@ -96,6 +96,8 @@ As expected, the first test failed.
 
 ## Usage
 
+### Local installation
+
 Prerequisite: `OPA` CLI is installed and available in `$PATH`
 
 ```
@@ -109,4 +111,18 @@ Options:
 -c                 Clean the bundle directory. By default it will be re-used if exists.
 -d, --data name    Directory containing data files. Can be json or yaml files.
 -t, --tests name   Directory containing Rego tests. Could be the same as data directory.
+```
+
+### Docker
+
+1. Build image from Dockerfile or get from DockerHub
+```
+$ docker build -t opa-test .
+# or
+$ docker pull indikaudagedara/opa-test
+```
+
+2. Run
+```
+$ docker run -v /example:/data/example -it indikaudagedara/opa-test -b ./bundle -d ./example -t ./example
 ```
