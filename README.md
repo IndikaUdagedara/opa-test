@@ -8,7 +8,7 @@ OPA Test Runner: Apply policies to arbitrary `json` or `yaml` data using `OPA` a
 
 ## What is this?
 
-I have come across few situations where I needed to validate configuration (usually in `json` or `yaml` format) against certain policies. I think this is a quite common scenario particularly in the Infrastructure-as-code space with the move to declarative languages/specifications (e.g. Kubernetes, Cloudformation).
+I have come across quite a few situations where arbitrary structured data (usually in `json` or `yaml` format) needed to be validated against policies. Examples are: Validating `replicas` is a certain value in Production environment in a Kubernetes `Deployment` or  validating `MultiAZ` is set in RDS Cloudformation template or validating custom rules in a json configuration file with a bespoke schema.
 
 Fortunately, there's a tool that is purpose-built for arbitrary policy validation, [`OPA`](https://www.openpolicyagent.org/docs/latest/). `OPA` and the accompanying `Rego` language is probably the _industry standard_ for this. But, in my experience, `OPA` doesn't make it trivial to validate policies across configuration files structured in an arbitrary directory structure -- you need to bundle them in a specific format or `POST` them to an `OPA` server instance. **This shell script (`opa-test`) attempts to make that process more palatable. It doesn't use `OPA` running in server mode but `OPA` CLI's `opa test` functionality to validate arbitrary `json` or `yaml` files against policies defined in `Rego` language.**
 
